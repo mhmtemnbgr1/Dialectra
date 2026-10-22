@@ -1,0 +1,4 @@
+google-genai>=2.31
+sounddevice
+python-dotenv
+customtkinter>=5.2

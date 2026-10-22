@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Gizli bilgiler: API anahtarı ve kullanıcı tercihleri asla commit'lenmez
+.env
+.env.*
+!.env.example
+*.key
+settings.json
+
+# Derleme çıktıları
+.build/
+dist/

@@ -1,0 +1,47 @@
+# Her push'ta testler çalışır. "v" ile başlayan bir etiket (ör. v1.2.0) push'lanınca
+# Dialectra.exe derlenir ve lisans dosyasıyla birlikte GitHub Release'e yüklenir.
+#
+# Eylemler sürüm adıyla değil commit SHA'sıyla sabitlenmiştir; etiket sonradan
+# değiştirilse bile burada çalışan kod değişmez.
+
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover tests -v
+
+  release:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+    permissions:
+      contents: write # Release oluşturmak için
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt pyinstaller==6.22.3
+      - run: >-
+          pyinstaller dialectra.py --noconfirm --onefile --windowed --name Dialectra
+          --workpath .build --distpath dist --specpath .build
+      - run: python scripts/licenses.py dist/THIRD_PARTY_LICENSES.txt
+      - run: gh release create "$env:GITHUB_REF_NAME" dist/Dialectra.exe dist/THIRD_PARTY_LICENSES.txt --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

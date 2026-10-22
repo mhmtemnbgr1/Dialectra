@@ -1,5 +1,7 @@
 # Dialectra
 
+**Türkçe** | [English](README.en.md)
+
 İngilizce ↔ Türkçe canlı sesli çeviri uygulaması (Windows). Mikrofona İngilizce
 ya da Türkçe konuş; çevirisi hoparlörden çalar ve ekranda altyazı olarak görünür.
 Çeviri [Gemini 3.5 Live Translate](https://ai.google.dev/gemini-api/docs/live-api/live-translate)

@@ -158,7 +158,7 @@ class App:
                      height=26).pack(anchor="w")
         ctk.CTkLabel(titles, text="İngilizce ↔ Türkçe canlı sesli çeviri", font=font(12),
                      text_color=C["muted"], height=18).pack(anchor="w")
-        self.key_btn = self._button(header, "🔑  API anahtarı", self.ask_api_key, kind="ghost",
+        self.key_btn = self._button(header, "API anahtarı", self.ask_api_key, kind="ghost",
                                     height=36, font=font(12), width=140)
         self.key_btn.pack(side="right")
 
@@ -197,11 +197,11 @@ class App:
     def _build_controls(self, box: ctk.CTkFrame) -> None:
         box.columnconfigure((0, 1), weight=1, uniform="dev")
 
-        def device_picker(col: int, title: str, icon: str) -> tuple[ctk.StringVar, ctk.CTkOptionMenu]:
+        def device_picker(col: int, title: str) -> tuple[ctk.StringVar, ctk.CTkOptionMenu]:
             cell = ctk.CTkFrame(box, fg_color="transparent")
             cell.grid(row=0, column=col, sticky="ew", padx=(18 if col == 0 else 8, 18 if col else 8),
                       pady=(16, 0))
-            ctk.CTkLabel(cell, text=f"{icon}  {title}", font=font(11, "bold"),
+            ctk.CTkLabel(cell, text=title, font=font(11, "bold"),
                          text_color=C["muted"], height=18).pack(anchor="w")
             var = ctk.StringVar()
             menu = ctk.CTkOptionMenu(
@@ -214,8 +214,8 @@ class App:
             menu.pack(fill="x", pady=(6, 0))
             return var, menu
 
-        self.mic_var, self.mic_box = device_picker(0, "Mikrofon", "🎙")
-        self.out_var, self.out_box = device_picker(1, "Hoparlör", "🔊")
+        self.mic_var, self.mic_box = device_picker(0, "Mikrofon")
+        self.out_var, self.out_box = device_picker(1, "Hoparlör")
 
         row = ctk.CTkFrame(box, fg_color="transparent")
         row.grid(row=1, column=0, columnspan=2, sticky="ew", padx=18, pady=16)
@@ -276,10 +276,9 @@ class App:
             child.destroy()
         self.cards = {}
         self.placeholder = ctk.CTkFrame(self.feed, fg_color="transparent")
-        self.placeholder.grid(row=0, column=0, pady=(110, 0))
-        ctk.CTkLabel(self.placeholder, text="🎙", font=font(40), text_color=C["faint"]).pack()
+        self.placeholder.grid(row=0, column=0, pady=(150, 0))
         ctk.CTkLabel(self.placeholder, text="Çeviriler burada görünecek", font=font(16, "bold"),
-                     text_color=C["text"]).pack(pady=(8, 2))
+                     text_color=C["text"]).pack(pady=(0, 4))
         ctk.CTkLabel(
             self.placeholder,
             text="İngilizce konuşursan Türkçe, Türkçe konuşursan İngilizce duyarsın.\n"
@@ -475,10 +474,8 @@ class App:
 
         top = ctk.CTkFrame(inner, fg_color="transparent")
         top.pack(fill="x")
-        ctk.CTkLabel(top, text="🔑", width=40, height=40, corner_radius=12, fg_color=C["card_alt"],
-                     font=font(18)).pack(side="left")
         ctk.CTkLabel(top, text="Gemini API anahtarı", font=font(17, "bold"),
-                     text_color=C["text"]).pack(side="left", padx=(12, 0))
+                     text_color=C["text"]).pack(side="left")
 
         ctk.CTkLabel(
             inner,
